@@ -16,3 +16,5 @@ class Users(ActiveBaseModel, table=True):
     # Relationships
     pets: List["Pets"] = Relationship(back_populates="user")
     bookings: List["Bookings"] = Relationship(back_populates="user")
+
+
