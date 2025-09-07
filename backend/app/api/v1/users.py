@@ -3,13 +3,16 @@ from sqlmodel import Session, select
 from typing import List,Optional
 from app.schema.database import get_session
 from app.models.users import Users
-#from app.crud import users as user_crud
 from sqlmodel import SQLModel
 from passlib.context import CryptContext
 from pydantic import EmailStr
 from uuid import uuid4,UUID
+from app.core.security import create_access_token
+from dotenv import load_dotenv
+load_dotenv()
 
-router = APIRouter()
+
+router = APIRouter(tags =["users"])
 
 class UserCreate(SQLModel):
     email : EmailStr
@@ -74,3 +77,31 @@ async def user_register(user_data : UserCreate, session : Session = Depends(get_
     session.refresh(new_user)
 
     return {"message" : "User registered succesfully", "id" : new_user.id}
+
+
+
+
+@router.post("/auth/login")
+async def user_login(user_data : UserLogin, session:Session = Depends(get_session)):
+    #checking if the user exists or not
+    user = session.exec(select(Users).where(Users.email == user_data.email)).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail = "Incorrect email or password",
+        )
+
+    #verifying password
+    if not pwd_context.verify(user_data.password , user.password_hash):
+         raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail = "Incorrect email or password",
+        )
+
+    #creating JWT token
+    access_token = create_access_token(
+        data = {"sub" : str(user.id)}
+    )
+
+    #returning the access token to the client
+    return {"access_token" : access_token, "token_type" : "bearer"} 
