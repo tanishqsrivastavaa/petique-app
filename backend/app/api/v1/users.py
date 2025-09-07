@@ -8,6 +8,7 @@ from passlib.context import CryptContext
 from pydantic import EmailStr
 from uuid import uuid4,UUID
 from app.core.security import create_access_token
+from app.core.security import get_current_user
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -54,7 +55,7 @@ def hash_password(password:str) -> str:
 async def user_register(user_data : UserCreate, session : Session = Depends(get_session)):
     
     #checking if the user already exists or not
-    existing_user = session.exec(select(Users).where(Users.email == user_data.email)).first()
+    existing_user = get_user_by_email(session,user_data.email)
 
     if existing_user:
         raise HTTPException(status_code = status.HTTP_409_CONFLICT,detail  = "Email already registered")
@@ -64,17 +65,7 @@ async def user_register(user_data : UserCreate, session : Session = Depends(get_
 
     #Create a new user object
 
-    new_user = Users(
-        email = user_data.email,
-        full_name = user_data.full_name,
-        password_hash = hashed_password
-    )
-
-
-    #saving the new user to db
-    session.add(new_user)
-    session.commit()
-    session.refresh(new_user)
+    new_user = create_user(session,user_data,hashed_password)
 
     return {"message" : "User registered succesfully", "id" : new_user.id}
 
@@ -105,3 +96,9 @@ async def user_login(user_data : UserLogin, session:Session = Depends(get_sessio
 
     #returning the access token to the client
     return {"access_token" : access_token, "token_type" : "bearer"} 
+
+
+#implementing a protected endpoint
+@router.get("/users/me",response_model = UserResponse)
+async def read_current_user(current_user : Users = Depends(get_current_user)):
+    return current_user
