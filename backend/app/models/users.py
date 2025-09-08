@@ -2,8 +2,8 @@ from sqlmodel import Field, Relationship
 from typing import List, TYPE_CHECKING
 from .base import ActiveBaseModel
 
-# if TYPE_CHECKING:
-#     from .pets import Pets
+if TYPE_CHECKING:
+    from .pets import Pets
 #     from .bookings import Bookings
 
 class Users(ActiveBaseModel, table=True):
@@ -14,7 +14,7 @@ class Users(ActiveBaseModel, table=True):
     password_hash: str | None = Field(default=None)
     
     # # Relationships
-    # pets: List["Pets"] = Relationship(back_populates="user")
-    # bookings: List["Bookings"] = Relationship(back_populates="user")
+    pets: List["Pets"] = Relationship(back_populates="owner")
+    #bookings: List["Bookings"] = Relationship(back_populates="user")
 
 

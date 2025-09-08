@@ -1,0 +1,8 @@
+{
+  "name": "Gabbar",
+  "species": "Cat",
+  "breed": "Golden Persian",
+  "date_of_birth": "June 2019",
+  "sex": "Male",
+  "notes": "He is a cat but acts super non-chalant and has a lot of attitude issues, since he is a Persian."
+}
