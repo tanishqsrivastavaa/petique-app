@@ -6,7 +6,7 @@ from .base import BaseModel
 
 if TYPE_CHECKING:
     from .users import Users
-    from .bookings import Bookings
+    #from .bookings import Bookings
 
 class Pets(BaseModel, table=True):
     __tablename__ = "pets"
@@ -18,7 +18,7 @@ class Pets(BaseModel, table=True):
     date_of_birth: date | None = Field(default=None, description="Pet's date of birth")
     sex: str | None = Field(default=None, description="Pet's sex")
     notes: str | None = Field(default=None, description="Additional notes about the pet")
-    
+    user_id : UUID = Field(foreign_key="users.id")
     # Relationships
-    user: "Users" = Relationship(back_populates="pets")
-    bookings: List["Bookings"] = Relationship(back_populates="pet")
+    owner: "Users" = Relationship(back_populates="pets")
+    #bookings: List["Bookings"] = Relationship(back_populates="pet")
