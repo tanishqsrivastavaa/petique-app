@@ -2,7 +2,8 @@ from datetime import datetime, timedelta
 from typing import Any
 from jose import jwt, JWTError
 from fastapi import HTTPException,status, Depends
-from sqlmodel import Session
+from app.models.users import Users
+from sqlmodel import Session,select
 from fastapi.security import OAuth2PasswordBearer
 from app.schema.database import get_session
 import os
@@ -38,7 +39,7 @@ def verify_token(token : str) -> dict[str,Any]:
 
 def get_current_user(token:str = Depends(oauth2_scheme),session : Session = Depends(get_session)):
     try:
-        payload = jwt.decode(token,SECRET_KEY,algorithms = [ALGORITHMS])
+        payload = jwt.decode(token,SECRET_KEY,algorithms = [ALGORITHM])
         user_id = payload.get("sub")
 
         if user_id is None:
