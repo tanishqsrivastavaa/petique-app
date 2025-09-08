@@ -9,34 +9,14 @@ from pydantic import EmailStr
 from uuid import uuid4,UUID
 from app.core.security import create_access_token
 from app.core.security import get_current_user
+from app.schema.users import UserCreate,UserUpdate,UserResponse, UserLogin, UserInDB
+from app.crud.users import get_user_by_email,create_user
 from dotenv import load_dotenv
 load_dotenv()
 
 
 router = APIRouter(tags =["users"])
 
-class UserCreate(SQLModel):
-    email : EmailStr
-    full_name : str
-    password : str
-
-class UserUpdate(SQLModel):
-    email:Optional[str] = None
-    full_name : Optional[str] = None
-    password : Optional[str] = None
-
-class UserResponse(SQLModel):
-    id : UUID
-    email : EmailStr
-    full_name : str
-
-class UserLogin(SQLModel):
-    email : EmailStr
-    password : str
-
-
-class UserInDB(UserResponse):
-    password_hash : str
 
 # class UserReadWithRelations(UserRead):
 #     pets : List[dict] = []
@@ -68,7 +48,6 @@ async def user_register(user_data : UserCreate, session : Session = Depends(get_
     new_user = create_user(session,user_data,hashed_password)
 
     return {"message" : "User registered succesfully", "id" : new_user.id}
-
 
 
 

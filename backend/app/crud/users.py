@@ -1,9 +1,10 @@
 from sqlmodel import Session,select
 from app.models.users import Users
-from app.api.v1.users import UserCreate
+#it should be from app.schemas.users import UserCreate
+from app.schema.users import UserCreate
 
 def get_user_by_email(session: Session,email : str):
-    return session.exec(select(Users).where(User.email == email)).first()
+    return session.exec(select(Users).where(Users.email == email)).first()
 
 def create_user(session:Session,user_data : UserCreate, password_hash : str):
     db_user = Users(
