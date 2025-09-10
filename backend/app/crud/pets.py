@@ -1,8 +1,6 @@
 from sqlmodel import select, Session
 from app.models.pets import Pets
 from app.schema.pets import PetCreate
-from app.schema.database import get_session
-from fastapi import Depends
 from uuid import UUID
 
 def create_pet(session : Session,pet_data : PetCreate, user_id : UUID):
@@ -14,4 +12,6 @@ def create_pet(session : Session,pet_data : PetCreate, user_id : UUID):
     session.add(new_pet)
     session.commit()
     session.refresh(new_pet)
-    return new_pet
+
+    return new_pet.pet_id
+# def get_pet()
