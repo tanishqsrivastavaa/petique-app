@@ -18,5 +18,7 @@ async def create_new_pet(
     current_user : Users = Depends(get_current_user),
     session : Session = Depends(get_session)
 ):
-    new_pet = create_pet(session = session, pet_data = pet_data,user_id = current_user.id)
-    return new_pet
+    new_id = create_pet(
+        session = session, pet_data = pet_data,
+        user_id = current_user.id)
+    return {"message" : "Pet registered successfuly","pet_id" : new_id}
