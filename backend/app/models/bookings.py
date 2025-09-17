@@ -4,7 +4,7 @@ from uuid import UUID,uuid4
 from typing import TYPE_CHECKING
 from .base import BaseModel
 from .enums import BookingStatus
-from sqlalchemy import Column, Enum as SAEnum, TIMESTAMP
+from sqlalchemy import Column,TIMESTAMP
 
 if TYPE_CHECKING:
     from .users import Users
@@ -14,9 +14,9 @@ if TYPE_CHECKING:
 class Bookings(BaseModel, table=True):
     __tablename__ = "bookings"
 
-    id : UUID = Field(default_factory = uuid4,primary_key=True)
+    id: UUID = Field(default_factory=uuid4, primary_key=True, nullable=False)
     user_id: UUID = Field(foreign_key="users.id", description="User who made the booking")
-    pet_id: int = Field(foreign_key="pets.id")
+    pet_id: UUID = Field(foreign_key="pets.id")
     vet_id: UUID = Field(foreign_key="vets.id")
     start_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment start time")
     end_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment end time")
