@@ -4,6 +4,13 @@ from sqlalchemy import engine_from_config,create_engine
 from sqlalchemy import pool
 from pathlib import Path
 from alembic import context
+from app.models.base import BaseModel # Or wherever your declarative Base is
+from app.models.users import Users
+from app.models.pets import Pets
+from app.models.vets import Vets
+from app.models.bookings import Bookings
+from app.models.vet_working_hours import VetWorkingHours
+from app.models.vet_time_off import VetTimeOff
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
