@@ -1,9 +1,10 @@
-from sqlmodel import Field, Relationship
+from sqlmodel import Field, Relationship, Column
 from datetime import datetime
-from uuid import UUID
+from uuid import UUID,uuid4
 from typing import TYPE_CHECKING
 from .base import BaseModel
 from .enums import BookingStatus
+from sqlalchemy import Column, Enum as SAEnum, TIMESTAMP
 
 if TYPE_CHECKING:
     from .users import Users
@@ -12,13 +13,14 @@ if TYPE_CHECKING:
 
 class Bookings(BaseModel, table=True):
     __tablename__ = "bookings"
-    
+
+    id : UUID = Field(default_factory = uuid4,primary_key=True)
     user_id: UUID = Field(foreign_key="users.id", description="User who made the booking")
-    pet_id: UUID = Field(foreign_key="pets.id", description="Pet being treated")
-    vet_id: UUID = Field(foreign_key="vets.id", description="Veterinarian assigned")
-    start_at: datetime = Field(description="Appointment start time")
-    end_at: datetime = Field(description="Appointment end time")
-    status: BookingStatus = Field(default=BookingStatus.PENDING, description="Booking status")
+    pet_id: int = Field(foreign_key="pets.pet_id")
+    vet_id: UUID = Field(foreign_key="vets.id")
+    start_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment start time")
+    end_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment end time")
+    booking_status: BookingStatus = Field(default=BookingStatus.PENDING, description="Booking status")
     reason: str | None = Field(default=None, description="Reason for appointment")
     
     # Relationships
