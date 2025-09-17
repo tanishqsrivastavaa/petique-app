@@ -16,7 +16,7 @@ class Bookings(BaseModel, table=True):
 
     id : UUID = Field(default_factory = uuid4,primary_key=True)
     user_id: UUID = Field(foreign_key="users.id", description="User who made the booking")
-    pet_id: int = Field(foreign_key="pets.pet_id")
+    pet_id: int = Field(foreign_key="pets.id")
     vet_id: UUID = Field(foreign_key="vets.id")
     start_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment start time")
     end_at: datetime = Field(sa_column = Column(TIMESTAMP(timezone = True),nullable=False),description="Appointment end time")
