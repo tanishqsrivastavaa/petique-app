@@ -4,7 +4,7 @@ from .base import ActiveBaseModel
 
 if TYPE_CHECKING:
     from .pets import Pets
-#     from .bookings import Bookings
+    from .bookings import Bookings
 
 class Users(ActiveBaseModel, table=True):
     __tablename__ = "users"
@@ -15,6 +15,6 @@ class Users(ActiveBaseModel, table=True):
     
     # # Relationships
     pets: List["Pets"] = Relationship(back_populates="owner")
-    #bookings: List["Bookings"] = Relationship(back_populates="user")
+    bookings: List["Bookings"] = Relationship(back_populates="user")
 
 
