@@ -13,5 +13,5 @@ def create_pet(session : Session,pet_data : PetCreate, user_id : UUID):
     session.commit()
     session.refresh(new_pet)
 
-    return new_pet.pet_id
+    return new_pet
 # def get_pet()
