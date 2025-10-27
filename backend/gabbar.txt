@@ -6,3 +6,10 @@
   "sex": "Male",
   "notes": "He is a cat but acts super non-chalant and has a lot of attitude issues, since he is a Persian."
 }
+
+#TODO
+
+1. ArcJet (Type of middleware) > 3
+2. CORS middleware > 4
+3. Auth middleware > 1
+4. Rolewise middleware > 2
