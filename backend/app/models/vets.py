@@ -25,5 +25,5 @@ class Vets(ActiveBaseModel, table=True):
     
     # Relationships
     bookings: List["Bookings"] = Relationship(back_populates="vet")
-    working_hours: List["VetWorkingHours"] = Relationship(back_populates="vet")
+    #working_hours: List["VetWorkingHours"] = Relationship(back_populates="vet")
     time_off: List["VetTimeOff"] = Relationship(back_populates="vet")
