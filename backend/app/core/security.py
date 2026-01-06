@@ -19,9 +19,9 @@ bearer_scheme = HTTPBearer()
 def create_access_token(data : dict, expires_delta : timedelta | None = None) -> str:
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow()+expires_delta
+        expire = datetime.now()+expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes = EXP_TOKEN)
+        expire = datetime.now() + timedelta(minutes = EXP_TOKEN)
     
     to_encode.update({"exp":expire})
 

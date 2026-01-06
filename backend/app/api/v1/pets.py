@@ -12,7 +12,7 @@ from app.crud.pets import create_pet
 
 router = APIRouter(tags=["pets"])
 
-@router.post("/pets/",status_code=status.HTTP_201_CREATED)
+@router.post("/pets/", status_code=status.HTTP_201_CREATED)
 async def create_new_pet(
     pet_data : PetCreate,
     current_user : Users = Depends(get_current_user),
