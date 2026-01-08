@@ -3,7 +3,7 @@ from app.api.v1.pets import router as pets_router
 from app.api.v1.users import router as users_router
 from app.api.v1.vets import router as vets_router
 from fastapi import FastAPI
-from fastapi.security import HTTPBearer, OAuth2PasswordBearer
+from fastapi.security import HTTPBearer
 
 bearer_scheme = HTTPBearer()
 
