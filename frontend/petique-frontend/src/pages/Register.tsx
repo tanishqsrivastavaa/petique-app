@@ -36,7 +36,7 @@ const RegisterPage = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: RegisterForm) => {
-      const payload = { name: data.fullName, email: data.email, password: data.password }
+      const payload = { full_name: data.fullName, email: data.email, password: data.password }
       const response = await api.post('/users/register', payload)
       return response.data
     },
