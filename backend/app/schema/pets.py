@@ -1,13 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlmodel import Session, select
-from typing import List, Optional
-from app.schema.database import get_session
-from app.models.pets import Pets
-from app.models.users import Users
 from sqlmodel import SQLModel
 from uuid import UUID
-from app.core.security import get_current_user
 from datetime import date
+
 class PetCreate(SQLModel):
     name : str
     species : str
@@ -16,5 +10,20 @@ class PetCreate(SQLModel):
     sex : str | None = None
     notes : str | None = None
 
+class PetUpdate(SQLModel):
+    name: str | None = None
+    species: str | None = None
+    breed: str | None = None
+    date_of_birth: date | None = None
+    sex: str | None = None
+    notes: str | None = None
 
-# class PetResponse(SQLModel):
+class PetResponse(SQLModel):
+    id: UUID
+    user_id: UUID
+    name: str
+    species: str
+    breed: str | None = None
+    date_of_birth: date | None = None
+    sex: str | None = None
+    notes: str | None = None

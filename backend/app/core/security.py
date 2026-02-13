@@ -3,6 +3,8 @@ from typing import Any
 from jose import jwt, JWTError
 from fastapi import HTTPException,status, Depends
 from app.models.users import Users
+from app.models.vets import Vets
+from app.models.enums import UserRole
 from sqlmodel import Session,select
 from fastapi.security import HTTPBearer
 from app.schema.database import get_session
@@ -64,3 +66,34 @@ def get_current_user(token:str = Depends(bearer_scheme),session : Session = Depe
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
         )
+
+
+def require_owner(current_user: Users = Depends(get_current_user)):
+    if current_user.role != UserRole.OWNER:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only pet owners can access this resource",
+        )
+    return current_user
+
+
+def require_vet(current_user: Users = Depends(get_current_user)):
+    if current_user.role != UserRole.VET:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only veterinarians can access this resource",
+        )
+    return current_user
+
+
+def get_current_vet_profile(
+    current_user: Users = Depends(require_vet),
+    session: Session = Depends(get_session),
+):
+    vet = session.exec(select(Vets).where(Vets.user_id == current_user.id)).first()
+    if not vet:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vet profile not found",
+        )
+    return vet

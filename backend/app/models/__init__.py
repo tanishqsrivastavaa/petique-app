@@ -1,6 +1,6 @@
 # Import models in dependency order
 from .base import BaseModel, ActiveBaseModel, TimestampMixin
-from .enums import BookingStatus
+from .enums import BookingStatus, UserRole
 from .users import Users
 from .vets import Vets
 from .vet_working_hours import VetWorkingHours
@@ -14,6 +14,7 @@ __all__ = [
     "ActiveBaseModel", 
     "TimestampMixin",
     "BookingStatus",
+    "UserRole",
     "Users",
     "Vets",
     "VetWorkingHours",
