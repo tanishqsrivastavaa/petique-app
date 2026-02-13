@@ -12,6 +12,11 @@ def list_bookings_for_user(session: Session, user_id: UUID) -> List[Bookings]:
     return session.exec(statement).all()
 
 
+def list_bookings_for_vet(session: Session, vet_id: UUID) -> List[Bookings]:
+    statement = select(Bookings).where(Bookings.vet_id == vet_id)
+    return session.exec(statement).all()
+
+
 def get_booking_by_id(session: Session, booking_id: UUID, user_id: UUID) -> Optional[Bookings]:
     statement = select(Bookings).where(
         Bookings.id == booking_id,

@@ -4,12 +4,13 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlmodel import Session, select
 
-from app.core.security import get_current_user
+from app.core.security import get_current_user, get_current_vet_profile
 from app.crud.bookings import (
     create_booking,
     delete_booking,
     get_booking_by_id,
     list_bookings_for_user,
+    list_bookings_for_vet,
     update_booking,
 )
 from app.models.pets import Pets
@@ -28,6 +29,14 @@ async def list_bookings(
     current_user: Users = Depends(get_current_user),
 ):
     return list_bookings_for_user(session=session, user_id=current_user.id)
+
+
+@router.get("/bookings/vet", response_model=List[BookingResponse])
+async def list_vet_bookings(
+    session: Session = Depends(get_session),
+    vet: Vets = Depends(get_current_vet_profile),
+):
+    return list_bookings_for_vet(session=session, vet_id=vet.id)
 
 
 @router.get("/bookings/{booking_id}", response_model=BookingResponse)
