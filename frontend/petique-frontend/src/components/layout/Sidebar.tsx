@@ -21,6 +21,7 @@ const ownerLinks = [
 const vetLinks = [
     { to: '/vet/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/vet/profile', label: 'My Profile', icon: UserCircle },
+    { to: '/vet/bookings', label: 'Bookings', icon: CalendarCheck },
     { to: '/vet/schedule', label: 'Schedule', icon: Clock },
     { to: '/vet/time-off', label: 'Time Off', icon: CalendarOff },
 ]

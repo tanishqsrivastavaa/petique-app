@@ -13,6 +13,8 @@ import VetDashboardPage from './pages/vet/VetDashboard'
 import VetProfilePage from './pages/vet/VetProfile'
 import SchedulePage from './pages/vet/Schedule'
 import TimeOffPage from './pages/vet/TimeOff'
+import VetBookingsPage from './pages/vet/VetBookings'
+import VetBookingDetailPage from './pages/vet/VetBookingDetail'
 
 const RootRedirect = () => {
   if (!isAuthenticated()) {
@@ -65,6 +67,8 @@ export const router = createBrowserRouter([
       { path: '/vet/profile', element: <VetProfilePage /> },
       { path: '/vet/schedule', element: <SchedulePage /> },
       { path: '/vet/time-off', element: <TimeOffPage /> },
+      { path: '/vet/bookings', element: <VetBookingsPage /> },
+      { path: '/vet/bookings/:bookingId', element: <VetBookingDetailPage /> },
     ],
   },
 ])
