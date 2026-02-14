@@ -9,6 +9,7 @@ from app.crud.bookings import (
     create_booking,
     delete_booking,
     get_booking_by_id,
+    get_booking_by_id_for_vet,
     list_bookings_for_user,
     list_bookings_for_vet,
     update_booking,
@@ -16,7 +17,15 @@ from app.crud.bookings import (
 from app.models.pets import Pets
 from app.models.users import Users
 from app.models.vets import Vets
-from app.schema.bookings import BookingCreate, BookingResponse, BookingUpdate
+from app.schema.bookings import (
+    BookingCreate,
+    BookingResponse,
+    BookingUpdate,
+    VetBookingDetailResponse,
+    VetBookingStatusUpdate,
+    PetSummary,
+    OwnerSummary,
+)
 from app.schema.database import get_session
 
 
@@ -37,6 +46,63 @@ async def list_vet_bookings(
     vet: Vets = Depends(get_current_vet_profile),
 ):
     return list_bookings_for_vet(session=session, vet_id=vet.id)
+
+
+@router.get("/bookings/vet/{booking_id}", response_model=VetBookingDetailResponse)
+async def get_vet_booking_detail(
+    booking_id: UUID,
+    session: Session = Depends(get_session),
+    vet: Vets = Depends(get_current_vet_profile),
+):
+    booking = get_booking_by_id_for_vet(session=session, booking_id=booking_id, vet_id=vet.id)
+    if not booking:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found.")
+
+    pet = session.exec(select(Pets).where(Pets.id == booking.pet_id)).first()
+    owner = session.exec(select(Users).where(Users.id == booking.user_id)).first()
+
+    return VetBookingDetailResponse(
+        id=booking.id,
+        pet_id=booking.pet_id,
+        vet_id=booking.vet_id,
+        user_id=booking.user_id,
+        start_at=booking.start_at,
+        end_at=booking.end_at,
+        reason=booking.reason,
+        booking_status=booking.booking_status,
+        pet=PetSummary(
+            id=pet.id,
+            name=pet.name,
+            species=pet.species,
+            breed=pet.breed,
+            date_of_birth=str(pet.date_of_birth) if pet.date_of_birth else None,
+            sex=pet.sex,
+            notes=pet.notes,
+        ),
+        owner=OwnerSummary(
+            id=owner.id,
+            full_name=owner.full_name,
+            email=owner.email,
+        ),
+    )
+
+
+@router.patch("/bookings/vet/{booking_id}", response_model=BookingResponse)
+async def update_vet_booking_status(
+    booking_id: UUID,
+    status_in: VetBookingStatusUpdate,
+    session: Session = Depends(get_session),
+    vet: Vets = Depends(get_current_vet_profile),
+):
+    booking = get_booking_by_id_for_vet(session=session, booking_id=booking_id, vet_id=vet.id)
+    if not booking:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found.")
+
+    booking.booking_status = status_in.booking_status
+    session.add(booking)
+    session.commit()
+    session.refresh(booking)
+    return booking
 
 
 @router.get("/bookings/{booking_id}", response_model=BookingResponse)

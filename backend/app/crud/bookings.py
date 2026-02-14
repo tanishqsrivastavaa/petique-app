@@ -25,6 +25,14 @@ def get_booking_by_id(session: Session, booking_id: UUID, user_id: UUID) -> Opti
     return session.exec(statement).first()
 
 
+def get_booking_by_id_for_vet(session: Session, booking_id: UUID, vet_id: UUID) -> Optional[Bookings]:
+    statement = select(Bookings).where(
+        Bookings.id == booking_id,
+        Bookings.vet_id == vet_id,
+    )
+    return session.exec(statement).first()
+
+
 def create_booking(session: Session, booking_in: BookingCreate, user_id: UUID) -> Bookings:
     booking = Bookings(user_id=user_id, **booking_in.model_dump())
     session.add(booking)

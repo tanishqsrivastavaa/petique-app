@@ -33,5 +33,45 @@ class BookingResponse(BookingBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
+    user_id: UUID
+    booking_status: BookingStatus
+
+
+class PetSummary(SQLModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    name: str
+    species: str
+    breed: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    sex: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class OwnerSummary(SQLModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    full_name: str
+    email: str
+
+
+class VetBookingDetailResponse(SQLModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    pet_id: UUID
+    vet_id: UUID
+    user_id: UUID
+    start_at: datetime
+    end_at: datetime
+    reason: Optional[str] = None
+    booking_status: BookingStatus
+    pet: PetSummary
+    owner: OwnerSummary
+
+
+class VetBookingStatusUpdate(SQLModel):
     booking_status: BookingStatus
 
