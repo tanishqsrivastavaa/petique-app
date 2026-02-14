@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  color: #0f172a;
-  background-color: #f8fafc;
+  color: #1E293B;
+  background-color: #FFFDF5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,9 +16,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 20%, #e6faf7, transparent 30%),
-    radial-gradient(circle at 80% 0%, #e0f2fe, transparent 25%),
-    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background: radial-gradient(circle at 20% 20%, #FFFBEB, transparent 30%),
+    radial-gradient(circle at 80% 0%, #FFF3C4, transparent 25%),
+    linear-gradient(180deg, #FFFDF5 0%, #FFFBEB 100%);
 }
 
 #root {
@@ -28,11 +28,15 @@ body {
 @layer base {
   label {
     font-weight: 600;
-    color: #0f172a;
+    color: #1E293B;
   }
-  input {
-    @apply w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
+
+  input,
+  select,
+  textarea {
+    @apply w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-ink shadow-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
   }
+
   button {
     @apply transition;
   }
@@ -42,13 +46,108 @@ body {
   .card {
     @apply rounded-2xl border border-border bg-white p-8 shadow-card;
   }
+
   .btn-primary {
-    @apply inline-flex w-full items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:cursor-not-allowed disabled:bg-brand-300;
+    @apply inline-flex w-full items-center justify-center rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-ink shadow-sm hover:bg-brand-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-brand-300;
   }
+
   .btn-secondary {
-    @apply inline-flex w-full items-center justify-center rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 hover:bg-fog;
+    @apply inline-flex w-full items-center justify-center rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold text-ink hover:bg-fog;
   }
+
+  .btn-danger {
+    @apply inline-flex w-full items-center justify-center rounded-xl bg-danger px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-lg p-2 text-ink/60 hover:bg-brand-50 hover:text-brand-600 transition;
+  }
+
   .input-label {
-    @apply mb-2 block text-sm font-semibold text-slate-700;
+    @apply mb-2 block text-sm font-semibold text-ink/80;
+  }
+
+  .page-header {
+    @apply text-2xl font-bold text-ink;
+  }
+
+  .page-sub {
+    @apply text-sm text-ink/60;
+  }
+
+  /* ── Sidebar ─────────────────────────────── */
+  .sidebar {
+    @apply fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-border bg-white;
+    width: 72px;
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .sidebar:hover,
+  .sidebar.expanded {
+    width: 260px;
+  }
+
+  .sidebar::before {
+    content: '';
+    @apply absolute left-0 top-0 h-full w-[3px] bg-brand-400;
+    opacity: 0.5;
+    transition: opacity 300ms ease;
+  }
+
+  .sidebar:hover::before {
+    opacity: 0;
+  }
+
+  .sidebar-label {
+    @apply whitespace-nowrap text-sm font-medium;
+    opacity: 0;
+    transition: opacity 200ms ease 0ms;
+    pointer-events: none;
+  }
+
+  .sidebar:hover .sidebar-label,
+  .sidebar.expanded .sidebar-label {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 100ms;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 rounded-xl px-4 py-2.5 text-ink/70 transition hover:bg-brand-50 hover:text-brand-700;
+    min-width: max-content;
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center gap-3 rounded-xl px-4 py-2.5 font-semibold bg-brand-50 text-brand-700;
+    min-width: max-content;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .badge-pending {
+    @apply badge bg-amber-100 text-amber-800;
+  }
+
+  .badge-confirmed {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-cancelled {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  .badge-completed {
+    @apply badge bg-slate-100 text-slate-700;
+  }
+
+  .badge-no_show {
+    @apply badge bg-orange-100 text-orange-800;
+  }
+
+  .stat-card {
+    @apply card flex items-center gap-4 p-6;
   }
 }

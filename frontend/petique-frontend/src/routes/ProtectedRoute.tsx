@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { isAuthenticated } from '../lib/auth'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
 type ProtectedRouteProps = {
   children: ReactNode
