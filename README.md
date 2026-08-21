@@ -4,6 +4,13 @@
     <strong>A modern veterinary appointment platform for pet owners and veterinarians.</strong>
   </p>
   <p align="center">
+    <img src="https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+    &nbsp;
+    <img src="https://img.shields.io/badge/Frontend-TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
+    &nbsp;
+    <img src="https://img.shields.io/badge/Deploy-Docker%20Compose-2496ED?logo=docker&logoColor=white" alt="Docker">
+  </p>
+  <p align="center">
     <a href="#features">Features</a> •
     <a href="#tech-stack">Tech Stack</a> •
     <a href="#getting-started">Getting Started</a> •
